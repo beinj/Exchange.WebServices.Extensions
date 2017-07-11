@@ -1,6 +1,7 @@
 ﻿using Exchange.WebServices.Extensions.Extensions;
 using Microsoft.Exchange.WebServices.Data;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using static Microsoft.Exchange.WebServices.Data.Recurrence;
 
@@ -62,8 +63,21 @@ namespace Exchange.WebServices.Extensions
 
         public static OccurrenceCollection Convert(WeeklyPattern pattern, Occurrence defaultOccurrence)
         {
-            Expression<Func<DateTime, DateTime>> predicate = previousDate => previousDate.AddDays(pattern.Interval * 7);
+            Expression<Func<DateTime, DateTime>> predicate = previousDate => WeeklyCalculate(pattern, previousDate);
             return Convert(pattern, defaultOccurrence, predicate);
+        }
+
+        private static DateTime WeeklyCalculate(WeeklyPattern pattern, DateTime previousDate)
+        {
+            while (true)
+            {
+                previousDate = previousDate.AddDays(1);
+
+                if (pattern.DaysOfTheWeek.Contains((DayOfTheWeek)previousDate.DayOfWeek))
+                {
+                    return previousDate;
+                }
+            }
         }
 
         public static OccurrenceCollection Convert(MonthlyPattern pattern, Occurrence defaultOccurrence)

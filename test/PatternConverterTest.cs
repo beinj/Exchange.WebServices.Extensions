@@ -11,7 +11,7 @@ namespace Exchange.WebServices.Extensions.Tests
         [Fact]
         public void ShouldContainDailyOccurences()
         {
-            DateTime date = DateTime.Now.Date;
+            var date = DateTime.Now.Date;
             var pattern = new DailyPattern(date, 1)
             {
                 EndDate = DateTime.Now.Date.AddDays(5)
@@ -32,7 +32,7 @@ namespace Exchange.WebServices.Extensions.Tests
         [Fact]
         public void ShouldContainWeeklyOccurences()
         {
-            var date = DateTime.Parse("2017-01-01T00:00:00");
+            var date = DateTime.Parse("2017-01-02T00:00:00");
 
             var pattern = new WeeklyPattern(date, 1)
             {
@@ -51,7 +51,7 @@ namespace Exchange.WebServices.Extensions.Tests
 
             var result = PatternConverter.Convert(pattern, occurrence);
 
-            Assert.Equal(6, result.Count);
+            Assert.Equal(7, result.Count);
             Assert.Equal(date, result.First().Start);
         }
 
@@ -129,7 +129,7 @@ namespace Exchange.WebServices.Extensions.Tests
         [Fact]
         public void ShouldWorkWithNumberOfOccurrences()
         {
-            DateTime date = DateTime.Now.Date;
+            var date = DateTime.Now.Date;
             var pattern = new DailyPattern(date, 1)
             {
                 NumberOfOccurrences = 5
