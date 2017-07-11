@@ -92,7 +92,7 @@ namespace Exchange.WebServices.Extensions.Tests
 
             var pattern = new RelativeMonthlyPattern(date, 1, DayOfTheWeek.Sunday, DayOfTheWeekIndex.First)
             {
-                EndDate = date.AddMonths(1)
+                EndDate = date.AddMonths(2)
             };
 
             var occurrence = new Occurrence { Start = date, End = date.AddHours(1) };
@@ -113,7 +113,7 @@ namespace Exchange.WebServices.Extensions.Tests
                 EndDate = DateTime.Now.Date.AddYears(2)
             };
 
-            var occurrence = new Occurrence { Start = DateTime.Now.Date, End = DateTime.Now.Date.AddHours(1) };
+            var occurrence = new Occurrence { Start = date, End = date.AddHours(1) };
 
             var result = PatternConverter.Convert(pattern, occurrence);
 
