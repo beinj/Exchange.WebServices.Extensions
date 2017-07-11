@@ -71,12 +71,12 @@ namespace Exchange.WebServices.Extensions.Tests
         public void ShouldContainYearlyOccurences()
         {
             DateTime date = DateTime.Now.Date;
-            var pattern = new YearlyPattern(DateTime.Now.Date, (Month)DateTime.Now.Month, DateTime.Now.Day)
+            var pattern = new YearlyPattern(date, (Month)date.Month, date.Day)
             {
                 EndDate = date.AddYears(2)
             };
 
-            var occurrence = new Occurrence { Start = DateTime.Now.Date, End = DateTime.Now.Date.AddHours(1) };
+            var occurrence = new Occurrence { Start = date, End = date.AddHours(1) };
 
             var result = PatternConverter.Convert(pattern, occurrence);
 
@@ -118,6 +118,27 @@ namespace Exchange.WebServices.Extensions.Tests
             var result = PatternConverter.Convert(pattern, occurrence);
 
             Assert.Equal(3, result.Count);
+            Assert.Equal(date, result.First().Start);
+        }
+
+        [Fact]
+        public void ShouldWorkWithNumberOfOccurrences()
+        {
+            DateTime date = DateTime.Now.Date;
+            var pattern = new DailyPattern(date, 1)
+            {
+                NumberOfOccurrences = 5
+            };
+
+            var occurrence = new Occurrence
+            {
+                Start = date,
+                End = date.AddHours(1)
+            };
+
+            var result = PatternConverter.Convert(pattern, occurrence);
+
+            Assert.Equal(5, result.Count);
             Assert.Equal(date, result.First().Start);
         }
     }
