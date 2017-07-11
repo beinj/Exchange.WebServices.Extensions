@@ -1,8 +1,9 @@
 ﻿using Microsoft.Exchange.WebServices.Data;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static Microsoft.Exchange.WebServices.Data.Recurrence;
+using Task = System.Threading.Tasks.Task;
 
 namespace Exchange.WebServices.Extensions
 {
@@ -27,11 +28,89 @@ namespace Exchange.WebServices.Extensions
 
             if (!appointment.Recurrence.HasEnd)
             {
-                ////throw new NotSupportedException("Appointment must has a fixed number of occurrences or an end date.");
                 return new OccurrenceCollection();
             }
 
-            var defaultOccurrence = new Occurrence
+            var defaultOccurrence = Mapping(appointment);
+
+            var result = new OccurrenceCollection();
+
+            if (appointment.Recurrence is DailyPattern dailyPattern)
+            {
+                result = PatternConverter.Convert(dailyPattern, defaultOccurrence);
+            }
+            else if (appointment.Recurrence is WeeklyPattern weeklyPattern)
+            {
+                result = PatternConverter.Convert(weeklyPattern, defaultOccurrence);
+            }
+            else if (appointment.Recurrence is MonthlyPattern monthlyPattern)
+            {
+                result = PatternConverter.Convert(monthlyPattern, defaultOccurrence);
+            }
+            else if (appointment.Recurrence is YearlyPattern yearlyPattern)
+            {
+                result = PatternConverter.Convert(yearlyPattern, defaultOccurrence);
+            }
+            else if (appointment.Recurrence is RelativeMonthlyPattern relativeMonthlyPattern)
+            {
+                result = PatternConverter.Convert(relativeMonthlyPattern, defaultOccurrence);
+            }
+            else if (appointment.Recurrence is RelativeYearlyPattern relativeYearlyPattern)
+            {
+                result = PatternConverter.Convert(relativeYearlyPattern, defaultOccurrence);
+            }
+
+            result.RemoveAll(appointment.DeletedOccurrences);
+
+            await result.UpdateAllAsync(service, appointment.ModifiedOccurrences);
+
+            return result;
+        }
+
+        private int RemoveAll(DeletedOccurrenceInfoCollection deletedOccurrences)
+        {
+            if (deletedOccurrences == null)
+            {
+                return 0;
+            }
+
+            return RemoveAll(m => deletedOccurrences.Any(d => d.OriginalStart == m.Start));
+        }
+
+        private async Task UpdateAllAsync(ExchangeService service, OccurrenceInfoCollection modifiedOccurrences)
+        {
+            var result = new OccurrenceCollection();
+
+            foreach (var item in modifiedOccurrences)
+            {
+                var occurrence = Find(m => m.Start == item.OriginalStart);
+                var appointment = await Appointment.Bind(service, item.ItemId, new PropertySet(BasePropertySet.FirstClassProperties));
+
+                if (occurrence == null || appointment == null)
+                {
+                    break;
+                }
+
+                occurrence.Start = appointment.Start;
+                occurrence.End = appointment.End;
+                occurrence.IsAllDayEvent = appointment.IsAllDayEvent;
+                occurrence.IsCancelled = appointment.IsCancelled;
+                occurrence.LastModifiedTime = appointment.LastModifiedTime;
+                occurrence.MasterAppointmentId = appointment.Id.UniqueId;
+                occurrence.Sensitivity = appointment.Sensitivity;
+                occurrence.Subject = appointment.Subject;
+                occurrence.Text = appointment.TextBody?.Text;
+            }
+        }
+
+        private static Occurrence Mapping(Appointment appointment)
+        {
+            if (appointment == null)
+            {
+                return null;
+            }
+
+            return new Occurrence
             {
                 Start = appointment.Start,
                 End = appointment.End,
@@ -43,35 +122,6 @@ namespace Exchange.WebServices.Extensions
                 Subject = appointment.Subject,
                 Text = appointment.TextBody?.Text
             };
-
-            var result = new OccurrenceCollection();
-
-            if (appointment.Recurrence is DailyPattern dailyPattern)
-            {
-                return PatternConverter.Convert(dailyPattern, defaultOccurrence);
-            }
-            else if (appointment.Recurrence is WeeklyPattern weeklyPattern)
-            {
-                return PatternConverter.Convert(weeklyPattern, defaultOccurrence);
-            }
-            else if (appointment.Recurrence is MonthlyPattern monthlyPattern)
-            {
-                return PatternConverter.Convert(monthlyPattern, defaultOccurrence);
-            }
-            else if (appointment.Recurrence is YearlyPattern yearlyPattern)
-            {
-                return PatternConverter.Convert(yearlyPattern, defaultOccurrence);
-            }
-            else if (appointment.Recurrence is RelativeMonthlyPattern relativeMonthlyPattern)
-            {
-                return PatternConverter.Convert(relativeMonthlyPattern, defaultOccurrence);
-            }
-            else if (appointment.Recurrence is RelativeYearlyPattern relativeYearlyPattern)
-            {
-                return PatternConverter.Convert(relativeYearlyPattern, defaultOccurrence);
-            }
-
-            throw new NotSupportedException();
         }
     }
 }
