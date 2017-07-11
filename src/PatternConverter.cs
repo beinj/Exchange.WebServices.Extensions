@@ -8,9 +8,6 @@ namespace Exchange.WebServices.Extensions
 {
     public static class PatternConverter
     {
-        // YearlyPattern
-        // RelativeMonthlyPattern
-        // RelativeYearlyPattern
         public static OccurrenceCollection Convert(
             Recurrence reccurrence,
             Occurrence defaultOccurrence,
