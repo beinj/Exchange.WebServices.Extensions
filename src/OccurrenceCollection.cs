@@ -79,6 +79,11 @@ namespace Exchange.WebServices.Extensions
 
         private async Task UpdateAllAsync(ExchangeService service, OccurrenceInfoCollection modifiedOccurrences)
         {
+            if (modifiedOccurrences == null)
+            {
+                return;
+            }
+
             foreach (var item in modifiedOccurrences)
             {
                 var occurrence = Find(m => m.Start == item.OriginalStart);

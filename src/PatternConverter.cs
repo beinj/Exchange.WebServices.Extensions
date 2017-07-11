@@ -25,7 +25,7 @@ namespace Exchange.WebServices.Extensions
 
             if (reccurrence.EndDate != null)
             {
-                while (start <= reccurrence.EndDate)
+                while (start.Date <= reccurrence.EndDate)
                 {
                     result.Add(Generate(defaultOccurrence, predicate, ref index, ref start, ref end));
                 }

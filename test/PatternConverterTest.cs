@@ -19,24 +19,29 @@ namespace Exchange.WebServices.Extensions.Tests
 
             var occurrence = new Occurrence
             {
-                Start = date,
-                End = date.AddHours(1)
+                Start = date.AddHours(1),
+                End = date.AddHours(2)
             };
 
             var result = PatternConverter.Convert(pattern, occurrence);
 
             Assert.Equal(6, result.Count);
-            Assert.Equal(date, result.First().Start);
+            Assert.Equal(date.AddHours(1), result.First().Start);
         }
 
         [Fact]
         public void ShouldContainWeeklyOccurences()
         {
-            DateTime date = DateTime.Now.Date;
+            var date = DateTime.Parse("2017-01-01T00:00:00");
+
             var pattern = new WeeklyPattern(date, 1)
             {
-                EndDate = date.AddDays(7)
+                EndDate = date.AddDays(14)
             };
+
+            pattern.DaysOfTheWeek.Add(DayOfTheWeek.Monday);
+            pattern.DaysOfTheWeek.Add(DayOfTheWeek.Tuesday);
+            pattern.DaysOfTheWeek.Add(DayOfTheWeek.Wednesday);
 
             var occurrence = new Occurrence
             {
@@ -46,7 +51,7 @@ namespace Exchange.WebServices.Extensions.Tests
 
             var result = PatternConverter.Convert(pattern, occurrence);
 
-            Assert.Equal(2, result.Count);
+            Assert.Equal(6, result.Count);
             Assert.Equal(date, result.First().Start);
         }
 
