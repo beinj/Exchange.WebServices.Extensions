@@ -22,7 +22,7 @@ namespace Exchange.WebServices.Extensions
                 AppointmentSchema.DeletedOccurrences
             };
 
-            var propertySet = new PropertySet(BasePropertySet.FirstClassProperties, definition);
+            var propertySet = new PropertySet(BasePropertySet.FirstClassProperties, definition) { RequestedBodyType = BodyType.Text };
 
             var appointment = await Appointment.Bind(service, recurringMasterId, propertySet);
 
@@ -67,24 +67,22 @@ namespace Exchange.WebServices.Extensions
             return result;
         }
 
-        private int RemoveAll(DeletedOccurrenceInfoCollection deletedOccurrences)
+        private void RemoveAll(DeletedOccurrenceInfoCollection deletedOccurrences)
         {
             if (deletedOccurrences == null)
             {
-                return 0;
+                return;
             }
 
-            return RemoveAll(m => deletedOccurrences.Any(d => d.OriginalStart == m.Start));
+            RemoveAll(m => deletedOccurrences.Any(d => d.OriginalStart == m.Start));
         }
 
         private async Task UpdateAllAsync(ExchangeService service, OccurrenceInfoCollection modifiedOccurrences)
         {
-            var result = new OccurrenceCollection();
-
             foreach (var item in modifiedOccurrences)
             {
                 var occurrence = Find(m => m.Start == item.OriginalStart);
-                var appointment = await Appointment.Bind(service, item.ItemId, new PropertySet(BasePropertySet.FirstClassProperties));
+                var appointment = await Appointment.Bind(service, item.ItemId, new PropertySet(BasePropertySet.FirstClassProperties) { RequestedBodyType = BodyType.Text });
 
                 if (occurrence == null || appointment == null)
                 {
@@ -99,7 +97,7 @@ namespace Exchange.WebServices.Extensions
                 occurrence.MasterAppointmentId = appointment.Id.UniqueId;
                 occurrence.Sensitivity = appointment.Sensitivity;
                 occurrence.Subject = appointment.Subject;
-                occurrence.Text = appointment.TextBody?.Text;
+                occurrence.Text = appointment.Body;
             }
         }
 
@@ -120,7 +118,7 @@ namespace Exchange.WebServices.Extensions
                 MasterAppointmentId = appointment.Id.UniqueId,
                 Sensitivity = appointment.Sensitivity,
                 Subject = appointment.Subject,
-                Text = appointment.TextBody?.Text
+                Text = appointment.Body
             };
         }
     }
