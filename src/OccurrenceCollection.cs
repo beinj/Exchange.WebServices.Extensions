@@ -60,21 +60,21 @@ namespace Exchange.WebServices.OccurrenceData
                 result = PatternConverter.Convert(relativeYearlyPattern, defaultOccurrence);
             }
 
-            result.RemoveAll(appointment.DeletedOccurrences);
+            result.CancelledAll(appointment.DeletedOccurrences);
 
             await result.UpdateAllAsync(service, appointment.ModifiedOccurrences);
 
             return result;
         }
 
-        private void RemoveAll(DeletedOccurrenceInfoCollection deletedOccurrences)
+        private void CancelledAll(DeletedOccurrenceInfoCollection deletedOccurrences)
         {
             if (deletedOccurrences == null)
             {
                 return;
             }
 
-            RemoveAll(m => deletedOccurrences.Any(d => d.OriginalStart == m.Start));
+            FindAll(m => deletedOccurrences.Any(d => d.OriginalStart == m.Start)).ForEach(m => m.IsCancelled = true);
         }
 
         private async Task UpdateAllAsync(ExchangeService service, OccurrenceInfoCollection modifiedOccurrences)
