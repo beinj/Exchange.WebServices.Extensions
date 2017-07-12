@@ -13,6 +13,12 @@ namespace Exchange.WebServices.OccurrenceData
         {
         }
 
+        /// <summary>
+        /// Binds to occurrences of an existing appointment. Calling this method results in a call to Exchange Web Services (EWS).
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="recurringMasterId">The recurring master identifier.</param>
+        /// <returns>Appointment occurrences that corresponds to the specified master identifier.</returns>
         public static async Task<OccurrenceCollection> Bind(ExchangeService service, ItemId recurringMasterId)
         {
             var definition = new PropertyDefinition[]

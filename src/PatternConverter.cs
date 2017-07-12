@@ -9,6 +9,13 @@ namespace Exchange.WebServices.OccurrenceData
 {
     public static class PatternConverter
     {
+        /// <summary>
+        /// Converts the specified reccurrence.
+        /// </summary>
+        /// <param name="reccurrence">The reccurrence.</param>
+        /// <param name="defaultOccurrence">The default occurrence.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
         public static OccurrenceCollection Convert(
             Recurrence reccurrence,
             Occurrence defaultOccurrence,
@@ -39,28 +46,24 @@ namespace Exchange.WebServices.OccurrenceData
             return result;
         }
 
-        private static Occurrence Generate(Occurrence defaultOccurrence, Expression<Func<DateTime, DateTime>> predicate, ref int index, ref DateTime start, ref DateTime end)
-        {
-            var occurrence = new Occurrence(defaultOccurrence)
-            {
-                Start = start,
-                End = end,
-                Index = index
-            };
-
-            start = predicate.Compile()(start);
-            end = predicate.Compile()(end);
-            index++;
-
-            return occurrence;
-        }
-
+        /// <summary>
+        /// Converts the specified pattern.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="defaultOccurrence">The default occurrence.</param>
+        /// <returns></returns>
         public static OccurrenceCollection Convert(DailyPattern pattern, Occurrence defaultOccurrence)
         {
             Expression<Func<DateTime, DateTime>> predicate = previousDate => previousDate.AddDays(pattern.Interval);
             return Convert(pattern, defaultOccurrence, predicate);
         }
 
+        /// <summary>
+        /// Converts the specified pattern.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="defaultOccurrence">The default occurrence.</param>
+        /// <returns></returns>
         public static OccurrenceCollection Convert(WeeklyPattern pattern, Occurrence defaultOccurrence)
         {
             Expression<Func<DateTime, DateTime>> predicate = previousDate => WeeklyCalculate(pattern, previousDate);
@@ -80,18 +83,36 @@ namespace Exchange.WebServices.OccurrenceData
             }
         }
 
+        /// <summary>
+        /// Converts the specified pattern.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="defaultOccurrence">The default occurrence.</param>
+        /// <returns></returns>
         public static OccurrenceCollection Convert(MonthlyPattern pattern, Occurrence defaultOccurrence)
         {
             Expression<Func<DateTime, DateTime>> predicate = previousDate => previousDate.AddMonths(pattern.Interval);
             return Convert(pattern, defaultOccurrence, predicate);
         }
 
+        /// <summary>
+        /// Converts the specified pattern.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="defaultOccurrence">The default occurrence.</param>
+        /// <returns></returns>
         public static OccurrenceCollection Convert(YearlyPattern pattern, Occurrence defaultOccurrence)
         {
             Expression<Func<DateTime, DateTime>> predicate = previousDate => previousDate.AddYears(1);
             return Convert(pattern, defaultOccurrence, predicate);
         }
 
+        /// <summary>
+        /// Converts the specified pattern.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="defaultOccurrence">The default occurrence.</param>
+        /// <returns></returns>
         public static OccurrenceCollection Convert(RelativeMonthlyPattern pattern, Occurrence defaultOccurrence)
         {
             Expression<Func<DateTime, DateTime>> predicate = previousDate => previousDate
@@ -100,12 +121,34 @@ namespace Exchange.WebServices.OccurrenceData
             return Convert(pattern, defaultOccurrence, predicate);
         }
 
+        /// <summary>
+        /// Converts the specified pattern.
+        /// </summary>
+        /// <param name="pattern">The pattern.</param>
+        /// <param name="defaultOccurrence">The default occurrence.</param>
+        /// <returns></returns>
         public static OccurrenceCollection Convert(RelativeYearlyPattern pattern, Occurrence defaultOccurrence)
         {
             Expression<Func<DateTime, DateTime>> predicate = previousDate => previousDate
                 .AddRelativeYears(1, pattern.Month, pattern.DayOfTheWeek, pattern.DayOfTheWeekIndex);
 
             return Convert(pattern, defaultOccurrence, predicate);
+        }
+
+        private static Occurrence Generate(Occurrence defaultOccurrence, Expression<Func<DateTime, DateTime>> predicate, ref int index, ref DateTime start, ref DateTime end)
+        {
+            var occurrence = new Occurrence(defaultOccurrence)
+            {
+                Start = start,
+                End = end,
+                Index = index
+            };
+
+            start = predicate.Compile()(start);
+            end = predicate.Compile()(end);
+            index++;
+
+            return occurrence;
         }
     }
 }

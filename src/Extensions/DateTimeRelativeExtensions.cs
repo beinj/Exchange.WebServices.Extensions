@@ -4,12 +4,27 @@ using System;
 namespace Exchange.WebServices.OccurrenceData.Extensions
 {
     public static class DateTimeRelativeExtensions
-    {
+    { 
+        /// <summary>
+        /// Returns a new <see cref="System.DateTime"/> that adds the relative number of months to the value of this instance.
+        /// </summary>
+        /// <param name="datetime">The datetime.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="dayOfTheWeek">The day of the week.</param>
+        /// <param name="dayOfTheWeekIndex">Index of the day of the week.</param>
         public static DateTime AddRelativeMonths(this DateTime datetime, int value, DayOfTheWeek dayOfTheWeek, DayOfTheWeekIndex dayOfTheWeekIndex)
         {
             return Calculate(dayOfTheWeek, dayOfTheWeekIndex, datetime.Month + value, datetime.Year);
         }
 
+        /// <summary>
+        /// Returns a new <see cref="System.DateTime"/> that adds the relative number of years to the value of this instance.
+        /// </summary>
+        /// <param name="datetime">The datetime.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="month">The month.</param>
+        /// <param name="dayOfTheWeek">The day of the week.</param>
+        /// <param name="dayOfTheWeekIndex">Index of the day of the week.</param>
         public static DateTime AddRelativeYears(this DateTime datetime, int value, Month month, DayOfTheWeek dayOfTheWeek, DayOfTheWeekIndex dayOfTheWeekIndex)
         {
             return Calculate(dayOfTheWeek, dayOfTheWeekIndex, (int)month, datetime.Year + value);
