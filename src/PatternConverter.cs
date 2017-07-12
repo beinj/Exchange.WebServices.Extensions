@@ -1,11 +1,11 @@
-﻿using Exchange.WebServices.Extensions.Extensions;
+﻿using Exchange.WebServices.OccurrenceData.Extensions;
 using Microsoft.Exchange.WebServices.Data;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using static Microsoft.Exchange.WebServices.Data.Recurrence;
 
-namespace Exchange.WebServices.Extensions
+namespace Exchange.WebServices.OccurrenceData
 {
     public static class PatternConverter
     {

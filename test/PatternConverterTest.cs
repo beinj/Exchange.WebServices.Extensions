@@ -4,7 +4,7 @@ using System.Linq;
 using Xunit;
 using static Microsoft.Exchange.WebServices.Data.Recurrence;
 
-namespace Exchange.WebServices.Extensions.Tests
+namespace Exchange.WebServices.OccurrenceData.Tests
 {
     public class PatternConverterTest
     {

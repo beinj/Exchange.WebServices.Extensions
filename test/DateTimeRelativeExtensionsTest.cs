@@ -1,9 +1,9 @@
-﻿using Exchange.WebServices.Extensions.Extensions;
+﻿using Exchange.WebServices.OccurrenceData.Extensions;
 using Microsoft.Exchange.WebServices.Data;
 using System;
 using Xunit;
 
-namespace Exchange.WebServices.Extensions.Tests
+namespace Exchange.WebServices.OccurrenceData.Tests
 {
     public class DateTimeRelativeExtensionsTest
     {

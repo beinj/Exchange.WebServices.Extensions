@@ -1,7 +1,7 @@
 ﻿using Microsoft.Exchange.WebServices.Data;
 using System;
 
-namespace Exchange.WebServices.Extensions.Extensions
+namespace Exchange.WebServices.OccurrenceData.Extensions
 {
     public static class DateTimeRelativeExtensions
     {

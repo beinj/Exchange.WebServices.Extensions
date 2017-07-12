@@ -1,4 +1,4 @@
-﻿using Exchange.WebServices.Extensions;
+﻿using Exchange.WebServices.OccurrenceData;
 using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Configuration;
 using System;

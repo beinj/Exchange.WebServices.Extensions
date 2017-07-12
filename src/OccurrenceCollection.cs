@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using static Microsoft.Exchange.WebServices.Data.Recurrence;
 using Task = System.Threading.Tasks.Task;
 
-namespace Exchange.WebServices.Extensions
+namespace Exchange.WebServices.OccurrenceData
 {
     public class OccurrenceCollection : List<Occurrence>
     {

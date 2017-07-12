@@ -1,7 +1,7 @@
 ﻿using Microsoft.Exchange.WebServices.Data;
 using System;
 
-namespace Exchange.WebServices.Extensions
+namespace Exchange.WebServices.OccurrenceData
 {
     public class Occurrence
     {

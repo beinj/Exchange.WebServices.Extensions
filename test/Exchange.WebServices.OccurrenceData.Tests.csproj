@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Exchange.WebServices.Extensions.csproj" />
+    <ProjectReference Include="..\src\Exchange.WebServices.OccurrenceData.csproj" />
   </ItemGroup>
 
   <ItemGroup>
