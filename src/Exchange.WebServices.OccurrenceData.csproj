@@ -7,7 +7,7 @@
     <Company />
     <Product />
     <Description />
-    <PackageId>Exchange.WebServices.OccurrenceData</PackageId>
+    <PackageId>Beinj.Exchange.WebServices.OccurrenceData</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
