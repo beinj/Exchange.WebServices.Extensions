@@ -7,7 +7,7 @@ build_script:
 - cmd: >-
     dotnet restore -v Minimal
 
-    dotnet pack "src\Exchange.WebServices.OccurrenceData.csproj" -c %CONFIGURATION% --version-suffix %LABEL% -o ../artifacts
+    dotnet pack "src\Exchange.WebServices.OccurrenceData.csproj" --version-suffix %APPVEYOR_BUILD_NUMBER% -o ../artifacts
 test_script:
 - cmd: dotnet test test/Exchange.WebServices.OccurrenceData.Tests.csproj
 artifacts:
