@@ -1,0 +1,14 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+branches:
+  only:
+  - dev
+build_script:
+- cmd: >-
+    dotnet restore -v Minimal
+
+    dotnet pack "src\Exchange.WebServices.OccurrenceData.csproj" -c %CONFIGURATION% --version-suffix %LABEL% -o ../artifacts
+test_script:
+- cmd: dotnet test test/Exchange.WebServices.OccurrenceData.Tests.csproj
+artifacts:
+- path: artifacts\**\*.nupkg
