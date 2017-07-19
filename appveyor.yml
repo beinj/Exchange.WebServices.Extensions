@@ -5,7 +5,7 @@ branches:
   - develop
 build_script:
 - cmd: >-
-    dotnet restore -v Minimal -s https://api.nuget.org/v3/index.json
+    dotnet restore -v Minimal
 
     dotnet pack "src\Exchange.WebServices.OccurrenceData.csproj" --version-suffix build%APPVEYOR_BUILD_NUMBER% -o ../artifacts
 test_script:
