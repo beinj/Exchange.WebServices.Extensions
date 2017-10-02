@@ -105,7 +105,6 @@ namespace Exchange.WebServices.OccurrenceData
                 occurrence.IsAllDayEvent = appointment.IsAllDayEvent;
                 occurrence.IsCancelled = appointment.IsCancelled;
                 occurrence.LastModifiedTime = appointment.LastModifiedTime;
-                occurrence.MasterAppointmentId = appointment.Id.UniqueId;
                 occurrence.Sensitivity = appointment.Sensitivity;
                 occurrence.Subject = appointment.Subject;
                 occurrence.Text = appointment.Body;
