@@ -14,7 +14,8 @@ namespace Exchange.WebServices.OccurrenceData.Extensions
         /// <param name="dayOfTheWeekIndex">Index of the day of the week.</param>
         public static DateTime AddRelativeMonths(this DateTime datetime, int value, DayOfTheWeek dayOfTheWeek, DayOfTheWeekIndex dayOfTheWeekIndex)
         {
-            return Calculate(dayOfTheWeek, dayOfTheWeekIndex, datetime.Month + value, datetime.Year);
+            var v = datetime.AddMonths(value);
+            return Calculate(dayOfTheWeek, dayOfTheWeekIndex, v.Month, v.Year);
         }
 
         /// <summary>
