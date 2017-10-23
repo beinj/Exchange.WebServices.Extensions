@@ -15,7 +15,7 @@ namespace Exchange.WebServices.OccurrenceData.Extensions
         public static DateTime AddRelativeMonths(this DateTime datetime, int value, DayOfTheWeek dayOfTheWeek, DayOfTheWeekIndex dayOfTheWeekIndex)
         {
             var v = datetime.AddMonths(value);
-            return Calculate(dayOfTheWeek, dayOfTheWeekIndex, v.Month, v.Year);
+            return Calculate(dayOfTheWeek, dayOfTheWeekIndex, v.Month, v.Year).Add(datetime.TimeOfDay);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Exchange.WebServices.OccurrenceData.Extensions
         /// <param name="dayOfTheWeekIndex">Index of the day of the week.</param>
         public static DateTime AddRelativeYears(this DateTime datetime, int value, Month month, DayOfTheWeek dayOfTheWeek, DayOfTheWeekIndex dayOfTheWeekIndex)
         {
-            return Calculate(dayOfTheWeek, dayOfTheWeekIndex, (int)month, datetime.Year + value);
+            return Calculate(dayOfTheWeek, dayOfTheWeekIndex, (int)month, datetime.Year + value).Add(datetime.TimeOfDay);
         }
 
         private static DateTime Calculate(DayOfTheWeek dayOfTheWeek, DayOfTheWeekIndex dayOfTheWeekIndex, int month, int year)
