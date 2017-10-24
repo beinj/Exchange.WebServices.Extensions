@@ -16,7 +16,7 @@ namespace Exchange.WebServices.OccurrenceData.Tests
         [InlineData(DayOfTheWeek.Friday, DayOfTheWeekIndex.Last, "2017-02-24", "2017-03-31")]
         [InlineData(DayOfTheWeek.Day, DayOfTheWeekIndex.Last, "2017-02-24", "2017-03-31")]
         [InlineData(DayOfTheWeek.Weekday, DayOfTheWeekIndex.Last, "2017-02-24", "2017-03-31")]
-        [InlineData(DayOfTheWeek.Friday, DayOfTheWeekIndex.Last, "2017-12-29", "2018-01-26")]
+        [InlineData(DayOfTheWeek.Friday, DayOfTheWeekIndex.Last, "2017-12-29T09:00", "2018-01-26T09:00")]
         public void ShouldReturnNextMonth(DayOfTheWeek day, DayOfTheWeekIndex index, string from, string expected)
         {
             var date = DateTime.Parse(from);
