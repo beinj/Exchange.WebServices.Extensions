@@ -115,14 +115,14 @@ namespace Exchange.WebServices.OccurrenceData.Tests
 
             var pattern = new RelativeYearlyPattern(date, Month.January, DayOfTheWeek.Sunday, DayOfTheWeekIndex.First)
             {
-                EndDate = DateTime.Now.Date.AddYears(2)
+                EndDate = date.AddYears(2)
             };
 
             var occurrence = new Occurrence { Start = date, End = date.AddHours(1) };
 
             var result = PatternConverter.Convert(pattern, occurrence);
 
-            Assert.Equal(3, result.Count);
+            Assert.Equal(2, result.Count);
             Assert.Equal(date, result.First().Start);
         }
 
